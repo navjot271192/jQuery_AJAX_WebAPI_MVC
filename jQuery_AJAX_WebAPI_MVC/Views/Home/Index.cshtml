@@ -1,0 +1,93 @@
+﻿@model jQuery_AJAX_WebAPI_MVC.Models.CarModel
+
+@*@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+@model JQueryAjaxCallINMVC.Controllers.Employee*@
+
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Jqurery AJAX Call</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnPost").click(function () {
+                var employee = new Object();
+                employee.RegistratonNo = $('#txtRegistratonNo').val();
+                employee.Reg_Date = $('#txtReg_Date').val();
+                employee.ModelNo = $('#txtModelNo').val();
+                employee.OwnerName = $('#txtOwnerName').val();
+
+                if (employee != null) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/AjaxAPI/AjaxMethod",
+                        data: JSON.stringify(employee),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response != null) {
+                                alert("Name : " + response.Name + ", Designation : " + response.Designation + ", Location :" + response.Location);
+                            }
+                            else {
+                                alert("Something went wrong");
+                            }
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                }
+            });
+
+            $("#btnGet").click(function () {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/api/AjaxAPI/AjaxMethod",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != null) {
+                            $('#EmployeeName').val(response.Name);
+                            $('#EmployeeDesignation').val(response.Designation);
+                            $('#EmployeeLocation').val(response.Location);
+                        }
+                        else {
+                            alert("Something went wrong");
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div style="margin-left:20px">JQuery Ajax POST call wtih ASP.NET MVC controller</div>
+    <br />
+    <div title="PostPortion">
+        <input type="text" id="txtRegistratonNo" placeholder="RegistratonNo" />
+        <input type="text" id="txtReg_Date" placeholder="Reg_Date" />
+        <input type="text" id="txtModelNo" placeholder="ModelNo" />
+        <input type="text" id="txtOwnerName" placeholder="OwnerName" />
+        <input type="button" id="btnPost" value="Post Data" />
+    </div>
+</body>
+</html>
